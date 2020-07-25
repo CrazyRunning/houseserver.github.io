@@ -1,0 +1,88 @@
+.inputContent {
+	margin-bottom: 20px;
+}
+
+.inputContent .inputStyle {
+	height: 1.875rem;
+	width: 300px;
+	outline: none;
+	border: 1px solid rgb(59, 59, 59);
+}
+
+.inputContent .spanStyle {
+	width: 120px;
+	display: inline-block;
+}
+
+.submitBtn {
+	width: 200px;
+	height: 40px;
+	background: #65C3B5;
+	color: #fff;
+	border: none;
+	outline: none;
+}
+
+input.suggestImg {
+	position: absolute;
+	filter: alpha(opacity=0);
+	opacity: 0;
+}
+
+.suggestImg,
+.estateImg {
+	width: 300px;
+	height: 200px;
+	display: none;
+}
+
+.suggestImg {}
+
+input:focus {
+	border: none;
+	background-color: transparent !important;
+}
+
+.uploadDIv {
+	display: inline-block;
+}
+
+.searchBtn {
+	height: 2.25rem;
+	background: #65C3B5;
+	color: #fff;
+	border: none;
+	width: 50px;
+	text-align: center;
+	outline: none;
+}
+
+.button {
+	border: 1px solid #dcdcdc;
+	display: inline-block;
+	-webkit-appearance: button;
+	-webkit-writing-mode: horizontal-tb !important;
+	text-rendering: auto;
+	color: -internal-light-dark-color(buttontext, rgb(170, 170, 170));
+	letter-spacing: normal;
+	word-spacing: normal;
+	text-transform: none;
+	text-indent: 0px;
+	text-shadow: none;
+	display: inline-block;
+	text-align: center;
+	align-items: flex-start;
+	cursor: default;
+	background-color: -internal-light-dark-color(rgb(239, 239, 239), rgb(74, 74, 74));
+	box-sizing: border-box;
+	font: 400 13.3333px Arial;
+	padding: 1px 6px;
+	border-width: 2px;
+	border-style: outset;
+	border-color: -internal-light-dark-color(rgb(118, 118, 118), rgb(195, 195, 195));
+	border-image: initial;
+}
+.textarea{
+	width: 500px;
+	height: 100px;
+}
