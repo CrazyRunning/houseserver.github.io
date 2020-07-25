@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>开盘信息</title>
+		<link rel="stylesheet" type="text/css" href="css/index.css" />
+	</head>
+	<body>
+		<form action="" method="post" id="articleForm">
+			<div class="inputContent">
+				<span class="spanStyle">公示方案：</span>
+				<input class="inputStyle" name="annoucePlan" accept="image/*" multiple="multiple" type="file" id="annoucePlan" placeholder="请输入楼盘名称" />
+			</div>
+			<div class="inputContent">
+				<span class="spanStyle">一房一价图：</span>
+				<input class="inputStyle" name="roomPricePic" accept="image/*"  multiple="multiple" type="file" id="roomPricePic" placeholder="请输入楼盘名称" />
+			</div>
+			<img src="" id="img" name="img" style="width: 200px;">
+			<div class="inputContent">
+				<span class="spanStyle">主力户型：</span>
+				<input class="inputStyle" name="mainHouse" id="mainHouse" placeholder="请输入主力户型" />
+			</div>
+			<div class="inputContent">
+				<span class="spanStyle">验资金额：</span>
+				<input class="inputStyle" name="fundVerification" id="fundVerification" placeholder="请输入验资金额" />
+			</div>
+			<div class="inputContent">
+				<span class="spanStyle">销售范围：</span>
+				<input class="inputStyle" name="salesScope" id="salesScope" placeholder="请输入销售范围" />
+			</div>
+			<div class="inputContent">
+				<span class="spanStyle">装修情况：</span>
+				<input class="inputStyle" name="decoration" type="number" id="decoration" placeholder="请输入装修情况" />
+				<span>例如：1：精装 0：清水</span>
+			</div>
+
+			<div>
+				<button type="button" class="submitBtn" id="submitBtn">提交</button>
+			</div>
+		</form>
+	</body>
+	<script src="js/jquery.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/Bmob-2.1.0.min.js.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		Bmob.initialize("b37e3a5bbf848b3d", "HELLO6");
+
+		function getUrlParam(id) { //获取浏览器URL的参数值
+			var reg = new RegExp("(^|&)" + id + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+			var r = window.location.search.substr(1).match(reg); //匹配目标参数
+			if (r != null) return unescape(r[2]);
+			return null; //返回参数值
+		}
+		
+		const annoucePlan = document.getElementById('annoucePlan');
+		const roomPricePic = document.getElementById('roomPricePic');
+		var imgList = [];
+		var imgListUrl = [];
+		var huxingImgList = [];
+		var huxingImgListUrl = [];
+		roomPricePic.onchange = () => { //一房一价图片
+			console.log(roomPricePic.files, 'roomPricePic')
+			const pic = roomPricePic.files
+			let file
+			for (let item of pic) {
+				file = Bmob.File(item.name, item);
+				console.log(file, 'file')
+			}
+			file.save().then(res => {
+				var tempFilePaths = huxingImgList
+				if (tempFilePaths && tempFilePaths.length > 0) {
+					tempFilePaths = huxingImgList.concat(res)
+				} else {
+					tempFilePaths = res
+				}
+				huxingImgList = tempFilePaths
+				var len = huxingImgList;
+				var tem = "";
+				for (i = 0; i <= res.length; i++) { //只展示
+					if (res[i] && res[i].url) {
+						tem += "<div class='de" + parseInt(i + 1) +
+							"' style='width:100px;display:inline'><img style='width:100px' src='" + res[i].url + "'></div>";
+					}
+		
+				}
+				for (var i = 0; i < huxingImgList.length; i++) { //提交数据
+					if (huxingImgList[i] && huxingImgList[i].url) {
+						huxingImgListUrl.push(huxingImgList[i].url)
+					}
+				}
+				$("body").append(tem);
+				//3、回显
+		
+			}).catch(error => {
+				console.log(error)
+			})
+		}
+		annoucePlan.onchange = () => { //公示方案图片
+			console.log(annoucePlan.files, 'annoucePlan')
+			const pic = annoucePlan.files
+			let file
+			for (let item of pic) {
+				file = Bmob.File(item.name, item);
+				// var file = new Bmob.File(name, item[0]);
+				console.log(file, 'file')
+			}
+			file.save().then(res => {
+		
+				console.log(res.length);
+				console.log(res, '图片', imgList);
+				var tempFilePaths = imgList
+				if (tempFilePaths && tempFilePaths.length > 0) {
+					tempFilePaths = imgList.concat(res)
+				} else {
+					tempFilePaths = res
+				}
+				imgList = tempFilePaths
+				console.log(imgList, imgList.length)
+				var len = imgList;
+				var tem = "";
+				for (i = 0; i <= res.length; i++) { //只展示
+					if (res[i] && res[i].url) {
+						tem += "<div class='de" + parseInt(i + 1) +
+							"' style='width:100px;display:inline'><img style='width:100px' src='" + res[i].url + "'></div>";
+					}
+		
+				}
+				for (var i = 0; i < imgList.length; i++) { //提交数据
+					if (imgList[i] && imgList[i].url) {
+						console.log(imgList[i].url, '========')
+						imgListUrl.push(imgList[i].url)
+					}
+				}
+				$("body").append(tem);
+				//3、回显
+		
+			}).catch(error => {
+				console.log(error)
+			})
+		}
+		
+		
+		$("#submitBtn").click(function() { //提交数据
+			const queryArray = new Array();
+			var queryObj = Bmob.Query('PreShakeInfo');
+			var mainHouseValue = $("#mainHouse").val();
+			var fundVerificationValue = $("#fundVerification").val();
+			var salesScopeValue = $("#salesScope").val();
+			var decorationValue = $("#decoration").val();
+			if (getUrlParam('id')) {
+				queryObj.set("parentId", getUrlParam('id'));
+			}
+			if (mainHouseValue) {
+				queryObj.set("mainHouse", mainHouseValue);
+			}
+			if (fundVerificationValue) {
+				queryObj.set("fundVerification", fundVerificationValue);
+			}
+			if (salesScopeValue) {
+				queryObj.set("salesScope", salesScopeValue);
+			}
+			if (decorationValue) {
+				queryObj.set("decoration", Number(decorationValue));
+			}
+			if (imgListUrl.length > 0) {
+				queryObj.set("annoucePlan", imgListUrl);
+			}
+			if (huxingImgListUrl.length > 0) {
+				queryObj.set("roomPricePic", huxingImgListUrl);
+			}
+			queryArray.push(queryObj);
+			Bmob.Query('PreShakeInfo').saveAll(queryArray).then(result => {
+				console.log(result[0], result);
+				if(result[0].success){
+					alert('添加成功')
+					window.location = "indexList.html";
+				}else{
+					alert('添加失败')
+				}
+				// location.reload()
+			}).catch(err => {
+				console.log(err);
+			});
+		})
+	</script>
+</html>

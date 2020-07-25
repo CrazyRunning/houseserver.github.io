@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>添加意向登记表</title>
+		<link rel="stylesheet" type="text/css" href="css/index.css" />
+	</head>
+	<body>
+		<form action="" method="post" id="articleForm">
+			<div class="inputContent">
+				<span class="spanStyle">姓名：</span>
+				<input class="inputStyle" name="name" id="name" placeholder="请输入姓名" />
+				<span>例如：谈*轩，王*，谈*轩</span>
+			</div>
+			<div class="inputContent">
+				<span class="spanStyle">身份证号：</span>
+				<input class="inputStyle" name="idNumber" id="idNumber" placeholder="请输入身份证号" />
+				<span>例如：330105********2510，330105333332510，330105********2510</span>
+			</div>
+			<div class="inputContent">
+				<span class="spanStyle">摇号编号：</span>
+				<input class="inputStyle" name="shakeNumber" id="shakeNumber" placeholder="请输入摇号编号" />
+			</div>
+			<div class="inputContent">
+				<span class="spanStyle">手机号：</span>
+				<input class="inputStyle" name="phone" id="phone" placeholder="请输入手机号" />
+			</div>
+			<div class="inputContent">
+				<span class="spanStyle">审核状态：</span>
+				<input class="inputStyle" name="auditStatus" id="auditStatus" placeholder="请输入审核状态" />
+				<span>例如：审核通过 、 审核未通过</span>
+			</div>
+
+			<div>
+				<button type="button" class="submitBtn" id="submitBtn">提交</button>
+			</div>
+		</form>
+	</body>
+	<script src="js/jquery.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/Bmob-2.1.0.min.js.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		Bmob.initialize("b37e3a5bbf848b3d", "HELLO6");
+
+		function getUrlParam(id) { //获取浏览器URL的参数值
+			var reg = new RegExp("(^|&)" + id + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+			var r = window.location.search.substr(1).match(reg); //匹配目标参数
+			if (r != null) return unescape(r[2]);
+			return null; //返回参数值
+		}
+		// 验证手机号
+
+		// 判断手机号码
+
+		$("#submitBtn").click(function() { //提交数据
+			const queryArray = new Array();
+			var queryObj = Bmob.Query('registraInfor');
+			var phoneValue = $("#phone").val();
+			var nameValue = $("#name").val();
+			var idNumberValue = $("#idNumber").val();
+			var shakeNumberValue = $("#shakeNumber").val();
+			var auditStatusValue = $("#auditStatus").val();
+			if (phoneValue) {
+				if (!(/^1(3|4|5|6|7|8|9)\d{9}$/.test(phoneValue))) {
+					alert("手机号码有误，请重填");
+					return false;
+				}
+			}
+			if (getUrlParam('id')) {
+				queryObj.set("parentId", getUrlParam('id'));
+			}
+			if (phoneValue) {
+				queryObj.set("phone", phoneValue);
+			}
+			if (nameValue) {
+				queryObj.set("name", nameValue);
+			}
+			if (idNumberValue) {
+				queryObj.set("idNumber", idNumberValue);
+			}
+			if (shakeNumberValue) {
+				queryObj.set("shakeNumber", shakeNumberValue);
+			}
+			if (auditStatusValue) {
+				queryObj.set("auditStatus", auditStatusValue);
+			}
+			queryArray.push(queryObj);
+			Bmob.Query('registraInfor').saveAll(queryArray).then(result => {
+				console.log(result[0], result);
+				if(result[0].success){
+					alert('添加成功')
+					window.location = "indexList.html";
+				}else{
+					alert('添加失败')
+				}
+				// location.reload()
+			}).catch(err => {
+				console.log(err);
+			});
+			
+
+		})
+	</script>
+</html>

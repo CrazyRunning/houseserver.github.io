@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<div>
+			<table border="0" id="datas">
+				<thead>
+					<tr>
+						<th>楼盘名称</th>
+						<th>名称</th>
+						<th>时间</th>
+						<th>微信号</th>
+						<th>头像</th>
+						<th>操作</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody id="template">
+					<tr>
+						<td id="userName"></td>
+						<td id="time"></td> 
+						<td id="orgName"></td> 
+						<td id="signin"></td>
+						<td id="img"></td>
+						<td id="state"></td>
+						<td id="refuseState"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</body>
+	<script src="js/jquery.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/Bmob-2.1.0.min.js.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		Bmob.initialize("b37e3a5bbf848b3d", "HELLO6", "fe878e1c1c4f58af1aede0f2674f2b0f");
+
+		function getUrlParam(id) { //获取浏览器URL的参数值
+			var reg = new RegExp("(^|&)" + id + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+			var r = window.location.search.substr(1).match(reg); //匹配目标参数
+			if (r != null) return unescape(r[2]);
+			return null; //返回参数值
+		}
+		var id = getUrlParam('id')
+		var userId = '';
+		var underBuild='';
+		var userMess = {}
+		const query = Bmob.Query("PreConsultant");
+		query.get(getUrlParam('id')).then(res => {
+			if (res) {
+				console.log(res, '00000000')
+				userId = res.userId
+				userMess=res
+				var template = $('#template');
+				var fileList = '';
+				if (res.imgHeader) {
+					res.imgHeader = res.imgHeader
+				} else {
+					res.imgHeader = ''
+				}
+				fileList += '<tr><td id="id"  style="display: none;">' + res.objectId + '</td><td id="userName">' + res.underBuildName +
+					'</td><td id="orgName">' + res.name +
+					'</td><td id="time">' + res.createdAt +
+					'</td><td id="signin">' + res.wechatNumber + '</td><td id="img"><img style="width:100px" src=' + res.imgHeader +
+					' /></td><td id="state">' + '审核通过' + '</td><td id="refuseState">' + '审核拒绝' + '</td></tr>';
+			}
+			template.html(fileList);
+		});
+
+		function change(status) {//更新置业顾问
+			const queryStatus = Bmob.Query("_User");
+			queryStatus.get(userId).then(res => {
+				console.log(res, status, '0000')
+				if (status == '1') {
+					res.set('consultantVertied', true)
+					res.set('underBuild', underBuild)
+					alert('审核通过')
+				}
+				if (status == '2') {
+					res.set('consultantVertied', false)
+					alert('审核拒绝')
+				}
+				res.save()
+				window.location = "auditPage.html";
+			});
+		}
+		$("#datas tbody").on("click", "#state", function() { //详情
+			const query = Bmob.Query("PreConsultant");
+			query.get(getUrlParam('id')).then(res => {
+				console.log(res)
+				underBuild=res.underBuild
+				res.set('consultantVertied', 'true')
+				res.set('status', 1)
+				res.save()
+				change('1')
+
+			});
+			console.log('----通过')
+
+		});
+		$("#datas tbody").on("click", "#refuseState", function() { //详情
+			const query = Bmob.Query("PreConsultant");
+			query.destroy(getUrlParam('id')).then(res => {
+				// console.log(res)
+				// res.set('consultantVertied', 'false')
+				// res.set('status', 2)
+				// res.unset('userId')
+				// res.save()
+				alert('审核拒绝')
+				window.location = "auditPage.html";
+				// change('2')
+			});
+			console.log('----拒绝')
+
+		});
+	</script>
+</html>

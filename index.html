@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>添加楼盘</title>
+		<link rel="stylesheet" type="text/css" href="css/index.css" />
+
+	</head>
+	<body>
+		<form action="" method="post" id="articleForm">
+			<div class="inputContent">
+				<span class="spanStyle">楼盘名称：</span>
+				<input class="inputStyle" name="buildName"  id="buildName" placeholder="请输入楼盘名称" />
+			</div>
+			<div class="inputContent">
+				<span class="spanStyle">楼盘图片 ：</span>
+				<input type="file" id="profilePhotoFileUpload"  accept="image/*" >
+			</div>
+			<div class="inputContent">
+				<span class="spanStyle">户型图片 ：</span>
+				<input type="file" id="huxingPhotoFileUpload"  accept="image/*" >
+			</div>
+			<div class="inputContent">
+				<span class="spanStyle">单价：</span>
+				<input class="inputStyle" name="buildPrice" type="number" id="buildPrice" placeholder="请输入单价" />
+			</div>
+			<div class="inputContent">
+				<span class="spanStyle">总价：</span>
+				<input class="inputStyle" name="houseTotalPrice" type="number"  id="houseTotalPrice" placeholder="请输入总价" />
+			</div>
+			<div class="inputContent">
+				<span class="spanStyle">别名：</span>
+				<input class="inputStyle" name="otherName" id="otherName" placeholder="请输入别名" />
+			</div>
+			<div class="inputContent">
+				<span class="spanStyle">物业类型：</span>
+				<input class="inputStyle" name="propertyType" id="propertyType" placeholder="请输入物业类型" />
+			</div>
+			<div class="inputContent">
+				<span class="spanStyle">产权年限 ：</span>
+				<input class="inputStyle" name="ownerYears" id="ownerYears" type="number" placeholder="请输入产权年限" />
+			</div>
+			<div class="inputContent">
+				<span class="spanStyle">交房时间 ：</span>
+				<input class="inputStyle" name="deliverDate" id="deliverDate" type="date" placeholder="请输入交房时间" />
+			</div>
+			<div class="inputContent">
+				<span class="spanStyle">开发商 ：</span>
+				<input class="inputStyle" name="Developer" id="Developer" placeholder="请输入开发商" />
+			</div>
+			<div class="inputContent">
+				<span class="spanStyle">户型区间 ： </span>
+				<input class="inputStyle" name="houseAreaRange" id="houseAreaRange" placeholder="请输入户型区间" />
+			</div>
+			<div class="inputContent">
+				<span class="spanStyle">绿化率 ：</span>
+				<input class="inputStyle" name="greenRate" id="greenRate" placeholder="请输入绿化率" />
+			</div>
+			<div class="inputContent">
+				<span class="spanStyle">容积率 ：</span>
+				<input class="inputStyle" name="plotRate" id="plotRate" placeholder="请输入容积率" />
+			</div>
+			<div class="inputContent">
+				<span class="spanStyle">车位数 ：</span>
+				<input class="inputStyle" name="parkingNumber" id="parkingNumber"  placeholder="请输入车位数" />
+			</div>
+			<div class="inputContent">
+				<span class="spanStyle">总户数 ：</span>
+				<input class="inputStyle" name="houseTotalNumb" id="houseTotalNumb"  placeholder="请输入总户数" />
+			</div>
+			<div class="inputContent">
+				<span class="spanStyle">占地面积 ：</span>
+				<input class="inputStyle" name="buildTotalArea" id="buildTotalArea" placeholder="请输入占地面积" />
+			</div>
+			<div class="inputContent">
+				<span class="spanStyle">建筑面积 ：</span>
+				<input class="inputStyle" name="buildArea" id="buildArea" placeholder="请输入建筑面积" />
+			</div>
+			<div class="inputContent">
+				<span class="spanStyle">楼盘地址 ：</span>
+				<input class="inputStyle" name="buildAddress" id="buildAddress" placeholder="请输入楼盘地址    " />
+			</div>
+			<div class="inputContent">
+				<span class="spanStyle">售楼处电话 ：</span>
+				<input class="inputStyle" name="salePhone" id="salePhone" placeholder="请输入售楼处电话" />
+			</div>
+			<div class="inputContent">
+				<span class="spanStyle">行政区 ：</span>
+				<input class="inputStyle" name="adminRegion" id="adminRegion" placeholder="请输入行政区 " />
+			</div>
+			<div class="inputContent">
+				<span class="spanStyle">状态 ：</span>
+				<input class="inputStyle" name="status" id="status" placeholder="请输入状态 " />
+				<span>例如：最新取证、最新摇号、正在公示、正在登记</span>
+			</div>
+			<div class="inputContent">
+				<span class="spanStyle">特殊推荐 ：</span>
+				<input class="inputStyle" name="specialLabel" id="specialLabel" type="number" placeholder="请输入特殊推荐" />
+			    <span>例如：0：普通 1：热门推荐 2：优质推荐 8:品牌楼盘</span>
+			</div>
+			<div class="inputContent">
+				<span class="spanStyle">行政编码 ：</span>
+				<input class="inputStyle" name="adminRegionCode " id="adminRegionCode" placeholder="请输入行政编码" />
+			</div>
+			<!-- <div class="inputContent">
+				<span class="spanStyle">楼盘图片 ：</span>
+				<input class="inputStyle" name="buildPictures" id="buildPictures" type="file" placeholder="请输入楼盘图片" />
+				<div class="buildPictures">
+				</div>
+			</div> -->
+			<div class="inputContent">
+				<span class="spanStyle">楼盘经纬度 ：</span>
+				<input class="inputStyle" name="buildLocation" id="buildLocation" multiple="multiple" placeholder="请输入楼盘经纬度(经度 , 纬度)" />
+			    <span>例如：楼经纬度(经度 , 纬度)</span>
+			</div>
+			<div class="inputContent">
+				<span class="spanStyle">喜欢的用户 ：</span>
+				<input class="inputStyle" name="isLikedBy" id="isLikedBy" placeholder="请输入喜欢的用户" />
+			</div>
+			<div class="inputContent">
+				<span class="spanStyle">有房套数 ：</span>
+				<input class="inputStyle" name="houseCount1" type="number" id="houseCount1" placeholder="请输入有房套数" />
+			</div>
+			<div class="inputContent">
+				<span class="spanStyle">职业顾问 ：</span>
+				<input class="inputStyle" name="consultanters" id="consultanters" placeholder="请输入职业顾问 " />
+			</div>
+			<div class="inputContent">
+				<span class="spanStyle">预售时间 ：</span>
+				<input class="inputStyle" name="preSaleDate" type="date" id="preSaleDate" placeholder="请输入预售时间" />
+			</div>
+			<div class="inputContent">
+				<span class="spanStyle">开盘时间 ：</span>
+				<input class="inputStyle" name="guessSaleDate" type="date" id="guessSaleDate" placeholder="请输入开盘时间" />
+			</div>
+			<div class="inputContent">
+				<span class="spanStyle">摇号时间 ：</span>
+				<input class="inputStyle" name="shakingDate"  type="date" id="shakingDate" placeholder="请输入摇号时间" />
+			</div>
+			<div class="inputContent">
+				<span class="spanStyle">登记开始时间 ：</span>
+				<input class="inputStyle" name="registerDate" type="date" id="registerDate" placeholder="请输入登记开始时间" />
+			</div>
+			<div class="inputContent">
+				<span class="spanStyle">登记结束时间 ：</span>
+				<input class="inputStyle" name="registerEndDate" type="date" id="registerEndDate" placeholder="请输入登记结束时间" />
+			</div>
+			<div class="inputContent">
+				<span class="spanStyle">公示开始时间 ：</span>
+				<input class="inputStyle" name="announceDate" type="date" id="announceDate" placeholder="请输入公示开始时间" />
+			</div>
+			<div class="inputContent">
+				<span class="spanStyle">选房时间 ：</span>
+				<input class="inputStyle" name="houseChsDt" type="date" id="houseChsDt" placeholder="请输入选房时间" />
+			</div>
+			<div class="inputContent">
+				<span class="spanStyle">补交资料时间 ：</span>
+				<input class="inputStyle" name="supplyInforDate" type="date" id="supplyInforDate" placeholder="请输入补交资料时间" />
+			</div>
+			<div class="inputContent">
+				<span class="spanStyle">交付时间 ：</span>
+				<input class="inputStyle" name="deliverDate" type="date" id="deliverDate" placeholder="请输入交付时间" />
+			</div>
+			<div class="inputContent">
+				<span class="spanStyle">最大户型面积 ：</span>
+				<input class="inputStyle" name="houseAreaMax" type="number" id="houseAreaMax" placeholder="请输入最大户型面积" />
+			</div>
+			<div class="inputContent">
+				<span class="spanStyle">最小户型面积 ：</span>
+				<input class="inputStyle" name="houseAreaMin" type="number" id="houseAreaMin" placeholder="请输入最小户型面积" />
+			</div>
+			<div class="inputContent">
+				<span class="spanStyle">户型 ：</span>
+				<input class="inputStyle" name="houseType"  id="houseType" placeholder="请输入户型" />
+			</div>
+			<div class="inputContent">
+				<span class="spanStyle">评论量 ：</span>
+				<input class="inputStyle" name="commitCount" type="number" id="commitCount" placeholder="请输入评论量" />
+			</div>
+			<div class="inputContent">
+				<span class="spanStyle">预览量 ：</span>
+				<input class="inputStyle" name="hasVisitNumber" type="number" id="hasVisitNumber" placeholder="请输入预览量" />
+			</div>
+			<div class="inputContent">
+				<span class="spanStyle">标签 ：</span>
+				<input class="inputStyle" name="labels"   id="labels" placeholder="请输入标签" />
+				<span>例如：意向登记表，已摇号</span>
+			</div>
+			<!-- <div class="inputContent">
+				<span class="spanStyle">户型图 ：</span>
+				<input class="inputStyle" name="houseTypePictures" type="file" multiple="multiple" id="houseTypePictures"
+				 placeholder="请输入户型图" />
+				<div class="pic">
+				</div>
+
+			</div> -->
+			
+			<div>
+				<button type="button" class="submitBtn" id="submitBtn">提交</button>
+			</div>
+		</form>
+		<script src="js/jquery.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/index.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/Bmob-2.1.0.min.js.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			// Bmob.initialize("b37e3a5bbf848b3d", "HELLO6");
+			// const query = Bmob.Query("Building");
+			// query.find().then(res => {
+			//     console.log(res)
+			// });
+		</script>
+	</body>
+</html>

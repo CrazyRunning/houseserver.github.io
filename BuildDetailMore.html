@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>添加楼盘更多详情</title>
+		<link rel="stylesheet" type="text/css" href="css/index.css"/>
+	</head>
+	<body>
+		<form action="" method="post" id="articleForm">
+			<div style="display: flex;margin-bottom: 10px;">
+				<span class="spanStyle">项目简介：</span>
+				<textarea class="textarea" name="buildDesc" id="buildDesc" placeholder="请输入项目简介" ></textarea>
+			</div>
+			<div>
+				<button type="button" class="submitBtn" id="submitBtn">提交</button>
+			</div>
+		</form>
+	</body>
+	<script src="js/jquery.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/Bmob-2.1.0.min.js.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		Bmob.initialize("b37e3a5bbf848b3d", "HELLO6");
+		
+		function getUrlParam(id) { //获取浏览器URL的参数值
+			var reg = new RegExp("(^|&)" + id + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+			var r = window.location.search.substr(1).match(reg); //匹配目标参数
+			if (r != null) return unescape(r[2]);
+			return null; //返回参数值
+		}
+		$("#submitBtn").click(function() { //提交数据
+			const queryArray = new Array();
+			var queryObj = Bmob.Query('BuildDetailMore');
+			var buildDescValue = $("#buildDesc").val();
+			if (getUrlParam('id')) {
+				queryObj.set("parent", getUrlParam('id'));
+			}
+			console.log(buildDescValue,'buildDescValue')
+			
+			if (buildDescValue) {
+				queryObj.set("buildDesc", buildDescValue);
+			}
+			queryArray.push(queryObj);
+			Bmob.Query('BuildDetailMore').saveAll(queryArray).then(result => {
+				console.log(result[0], result);
+				if(result[0].success){
+					alert('添加成功')
+					window.location = "indexList.html";
+				}else{
+					alert('添加失败')
+				}
+				// location.reload()
+			}).catch(err => {
+				console.log(err);
+			});
+			
+		
+		})
+	</script>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>置业顾问加分数</title>
+		<link rel="stylesheet" type="text/css" href="css/index.css" />
+	</head>
+	<body>
+		<div class="inputContent">
+			<span class="spanStyle">楼盘名称：</span>
+			<input class="inputStyle" name="buildName" id="buildName" placeholder="请输入楼盘名称" />
+			<button class="searchBtn" id="estateNameBtn" :disabled="searchDisabled">查询</button>
+		</div>
+		<div class="inputContent" id="estateConsultantNameContent" style="display: none;">
+			<span class="spanStyle">置业顾问姓名：</span>
+			<input class="inputStyle" name="estateConsultantName" id="estateConsultantName" placeholder="请输入置业顾问姓名" />
+			<button class="searchBtn" id="consultantNameBtn">查询</button>
+		</div>
+		<div class="inputContent" id="addPointsContent" style="display: none;">
+			<span class="spanStyle">加分数：</span>
+			<input class="inputStyle" name="addPoints" id="addPoints" placeholder="请输入加分数" />
+		</div>
+		<div>
+			<button type="button" style="display: none;" class="submitBtn" id="submitBtn">提交</button>
+		</div>
+	</body>
+	<script src="js/jquery.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/Bmob-2.2.4.min.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		var objectId = '';
+		var userObjectId = '';
+		var userConsultantScore = ''
+		Bmob.initialize("b37e3a5bbf848b3d", "HELLO6");
+		$("#estateNameBtn").click(function() { //楼盘名称查询
+			var buildNameValue = $("#buildName").val();
+			if (buildNameValue) {
+				const query = Bmob.Query("Building");
+				query.equalTo("buildName", "==", buildNameValue);
+				query.find().then(res => {
+					let item = res.find(item => {
+						return item.buildName == buildNameValue;
+					});
+					if (item) {
+						objectId = item.objectId
+						console.log(item, item.objectId)
+						$("#estateConsultantNameContent").show()
+					} else {
+						$("#estateConsultantNameContent").hide();
+						$("#addPointsContent").hide();
+						$("#submitBtn").hide()
+						$("#estateConsultantName").val('')
+						alert('没有这个楼盘名称')
+						console.log(item)
+					}
+					console.log(res)
+				});
+			} else {
+				alert("请输入你所查询的楼盘名称")
+			}
+
+		})
+		$("#consultantNameBtn").click(function() { //置业顾问名称查询	荣安招商祥宸府
+			var estateConsultantName = $("#estateConsultantName").val();
+			if (estateConsultantName) {
+				const query = Bmob.Query("Users");
+				query.equalTo("username", "==", estateConsultantName);
+				query.find().then(res => {
+					let item = res.find(item => {
+						return item.username == estateConsultantName;
+					});
+					if (item) {
+						userObjectId = item.objectId
+						userConsultantScore = item.consultantScore
+						console.log(item, item.underBuild, objectId, '=====', item.consultantVertied)
+						// item.consultantVertied==true //用于识别置业顾问身份
+						// consultantScore
+						if (objectId == item.underBuild) {
+							console.log("属于这个楼盘")
+							if (item.consultantVertied == true || item.consultantVertied == 'true') {
+								$("#addPointsContent").show();
+								$("#submitBtn").show();
+							} else {
+								alert('该用户不属于置业顾问')
+							}
+						} else {
+							alert("不属于这个楼盘")
+							$("#submitBtn").hide()
+							$("#addPointsContent").hide();
+							$("#addPoints").val('')
+						}
+					} else {
+						alert('没有这个置业顾问姓名')
+						$("#submitBtn").hide()
+						$("#addPointsContent").hide();
+					}
+					console.log(res)
+				});
+			} else {
+				alert('请输入你所查询的置业顾问名称')
+			}
+
+		})
+		$("#submitBtn").click(function() { //提交积分加分数
+			if ($("#addPoints").val()) {
+				var addPoints = $("#addPoints").val()
+				// var addPoints = Number($("#addPoints").val());
+				var estateConsultantName = $("#estateConsultantName").val();
+				const query = Bmob.Query('Users');
+				query.equalTo("objectId", "==", userObjectId);
+				// 原积分userConsultantScore
+				console.log(userObjectId, addPoints)
+				// query.set('objectId', userObjectId)
+				// query.set('consultantScore', addPoints)
+				query.get(userObjectId).then(res => {
+					console.log(res.consultantScore, '你好')
+					if(res.consultantScore){
+						var consultantScore= Number(res.consultantScore)
+						var addPointsContent = Number(addPoints)
+						console.log(addPointsContent +consultantScore)
+						var num=(addPointsContent +consultantScore).toString()
+						res.set('consultantScore', num)
+					}else{
+						res.set('consultantScore', addPoints)
+					}
+					res.save()
+					alert('提交成功')
+				}).catch(err => {
+					alert('提交失败')
+					console.log(err)
+				})
+			}
+
+		})
+	</script>
+</html>
