@@ -204,7 +204,7 @@ $("#submitBtn").click(function() { //提交数据
 	if (deliverDateValue) {
 		let data = {
 			"__type": "Date",
-			"iso": getMyDate(deliverDateValue).getTime()
+			"iso": getMyDate(deliverDateValue)
 		}
 		console.log(data,typeof(data),'deliverDate')
 		queryObj.set("deliverDate", data);
