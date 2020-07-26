@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>首页广告</title>
+		<link rel="stylesheet" type="text/css" href="css/index.css" />
+	</head>
+	<body>
+		<form action="" method="post" id="articleForm">
+			<div class="inputContent">
+				<span class="spanStyle">首页banner：</span>
+				<input class="inputStyle" name="picLink" accept="image/*" type="file" id="homeBannerUpload" placeholder="请输入楼盘名称" />
+			</div>
+			<img src="" id="img" name="img" style="width: 200px;">
+			<div class="inputContent">
+				<span class="spanStyle">广告图片链接：</span>
+				<input class="inputStyle" name="picLink" accept="image/*" type="file" id="advBannerUpload" placeholder="请输入楼盘名称" />
+			</div>
+			<img src="" id="bannerImg" name="bannerImg" style="width: 200px;">
+			<div>
+				<button type="button" class="submitBtn" id="submitBtn">提交</button>
+			</div>
+		</form>
+	</body>
+	<script src="js/jquery.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/Bmob-2.1.0.min.js.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		var imgList = [];
+		var imgListUrl = [];
+		var huxingImgList = [];
+		var huxingImgListUrl = [];
+		Bmob.initialize("b37e3a5bbf848b3d", "HELLO6");
+		const homeBannerUpload = document.getElementById('homeBannerUpload');
+		homeBannerUpload.onchange = () => { //首页banner
+			const pic = homeBannerUpload.files
+			let file
+			for (let item of pic) {
+				file = Bmob.File(item.name, item);
+				console.log(file, 'file')
+			}
+			file.save().then(res => {
+				console.log(res.length);
+				console.log(res, '图片', huxingImgList);
+				var tempFilePaths = huxingImgList
+				if (tempFilePaths && tempFilePaths.length > 0) {
+					tempFilePaths = huxingImgList.concat(res)
+				} else {
+					tempFilePaths = res
+				}
+				huxingImgList = tempFilePaths
+				console.log(huxingImgList, huxingImgList.length)
+				var len = huxingImgList;
+				var tem = "";
+				for (i = 0; i <= res.length; i++) { //只展示
+					if (res[i] && res[i].url) {
+						tem += "<div class='de" + parseInt(i + 1) +
+							"' style='width:100px;display:inline'>首页banner:<img style='width:100px' src='" + res[i].url + "'></div>";
+					}
+
+				}
+				for (var i = 0; i < huxingImgList.length; i++) { //提交数据
+					if (huxingImgList[i] && huxingImgList[i].url) {
+						console.log(huxingImgList[i].url, '========')
+						huxingImgListUrl.push(huxingImgList[i].url)
+					}
+				}
+				$("body").append(tem);
+				//3、回显
+
+			}).catch(error => {
+				console.log(error)
+			})
+		}
+		const advBannerUpload = document.getElementById('advBannerUpload');
+		advBannerUpload.onchange = () => { //首页banner
+			const pic = advBannerUpload.files
+			let file
+			for (let item of pic) {
+				file = Bmob.File(item.name, item);
+				console.log(file, 'file')
+			}
+			file.save().then(res => {
+				console.log(res.length);
+				console.log(res, '图片', imgList);
+				var tempFilePaths = imgList
+				if (tempFilePaths && tempFilePaths.length > 0) {
+					tempFilePaths = imgList.concat(res)
+				} else {
+					tempFilePaths = res
+				}
+				imgList = tempFilePaths
+				console.log(imgList, imgList.length)
+				var len = imgList;
+				var tem = "";
+				for (i = 0; i <= res.length; i++) { //只展示
+					if (res[i] && res[i].url) {
+						tem += "<div class='de" + parseInt(i + 1) +
+							"' style='width:100px;display:inline'>广告图片链接:<img style='width:100px' src='" + res[i].url + "'></div>";
+					}
+
+				}
+				for (var i = 0; i < imgList.length; i++) { //提交数据
+					if (imgList[i] && imgList[i].url) {
+						console.log(imgList[i].url, '========')
+						imgListUrl.push(imgList[i].url)
+					}
+				}
+				$("body").append(tem);
+				//3、回显
+
+			}).catch(error => {
+				console.log(error)
+			})
+		}
+
+		$("#submitBtn").click(function() { //提交数据
+			const queryArray = new Array();
+			var queryObj = Bmob.Query('HomePageAd');
+			if (huxingImgListUrl.length > 0) {
+				queryObj.set("banners", huxingImgListUrl);
+			}
+			if (imgListUrl.length > 0) {
+				queryObj.set("adImgLink", huxingImgListUrl);
+			}
+			queryArray.push(queryObj);
+			// 传入刚刚构造的数组
+			Bmob.Query('HomePageAd').saveAll(queryArray).then(result => {
+				console.log(result[0], result);
+				if (result[0].success) {
+					alert('添加成功')
+				} else {
+					alert('添加失败')
+				}
+				locaion.reload()
+			}).catch(err => {
+				console.log(err);
+			});
+		})
+	</script>
+</html>
