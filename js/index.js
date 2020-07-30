@@ -28,7 +28,7 @@ $(function() {
 			for (i = 0; i <= res.length; i++) { //只展示
 				if (res[i] && res[i].url) {
 					tem += "<div class='de" + parseInt(i + 1) +
-						"' style='width:100px;display:inline'><img style='width:100px' src='" + res[i].url + "'></div>";
+						"' style='width:100px;display:inline'>户型图片：<img style='width:100px' src='" + res[i].url + "'></div>";
 				}
 
 			}
@@ -71,7 +71,7 @@ $(function() {
 			for (i = 0; i <= res.length; i++) { //只展示
 				if (res[i] && res[i].url) {
 					tem += "<div class='de" + parseInt(i + 1) +
-						"' style='width:100px;display:inline'><img style='width:100px' src='" + res[i].url + "'></div>";
+						"' style='width:100px;display:inline'>楼盘图片：<img style='width:100px' src='" + res[i].url + "'></div>";
 				}
 
 			}

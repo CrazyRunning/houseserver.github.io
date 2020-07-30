@@ -45,7 +45,10 @@ $(function() {
 					' /></td><td class="button" id="addHouseType">' + '添加户型' + '</td><td class="button" id="openMess">' +
 					'添加开盘信息' + '</td><td  class="button" id="registraInfor">' + '添加意向登记表' +
 					'</td><td  class="button" id="shakeResult">' + '添加摇号结果' + '</td><td  class="button" id="BuildDetailMore">' +
-					'添加更多详情' + '</td></tr>';
+					'添加更多详情' + '</td><td  class="button" id="addRoomPricePic">' +
+					'添加一房一价和公示方案' + '</td><td  class="button" id="detailApplicantsNum">' +
+					'添加楼盘的报名人数' + '</td><td  class="button" id="projetDescription">' +
+					'添加楼盘详情项目简介' + '</td></tr>';
 			});
 			template.html(fileList);
 		});
@@ -84,6 +87,17 @@ $(function() {
 		let TaskType = $(this).parent().children().eq(0).text(); //用children()
 		window.location = "BuildDetailMore.html?id=" + TaskType;
 	}))
-
+	$("#datas tbody").on("click", "#addRoomPricePic", (function() { //意向登记表
+		let TaskType = $(this).parent().children().eq(0).text(); //用children()
+		window.location = "addRoomPricePic.html?id=" + TaskType;
+	}))
+	$("#datas tbody").on("click", "#detailApplicantsNum", (function() { //意向登记表
+		let TaskType = $(this).parent().children().eq(0).text(); //用children()
+		window.location = "detailApplicantsNum.html?id=" + TaskType;
+	}))
+	$("#datas tbody").on("click", "#projetDescription", (function() { //意向登记表
+		let TaskType = $(this).parent().children().eq(0).text(); //用children()
+		window.location = "projetDescription.html?id=" + TaskType;
+	}))
 
 })
