@@ -9,14 +9,16 @@
 		<form action="" method="post" id="articleForm">
 			<div class="inputContent">
 				<span class="spanStyle">首页banner：</span>
-				<input class="inputStyle" name="picLink" accept="image/*" multiple="multiple" type="file" id="homeBannerUpload" placeholder="请输入楼盘名称" />
-			    <input type="checkbox" name="checkbox1" id="checkbox1" value="checkbox1" />选中状态表示展示：未选中状态表示隐藏
+				<input class="inputStyle" name="picLink" accept="image/*" multiple="multiple" type="file" id="homeBannerUpload"
+				 placeholder="请输入楼盘名称" />
+				<input type="checkbox" name="checkbox1" id="checkbox1" value="checkbox1" />选中状态表示展示：未选中状态表示隐藏
 			</div>
 			<img src="" id="img" name="img" style="width: 200px;">
 			<div class="inputContent">
 				<span class="spanStyle">广告图片链接：</span>
-				<input class="inputStyle" name="picLink" accept="image/*" multiple="multiple" type="file" id="advBannerUpload" placeholder="请输入楼盘名称" />
-			    <input type="checkbox" name="checkbox2" id="checkbox2" value="checkbox2" />选中状态表示展示：未选中状态表示隐藏
+				<input class="inputStyle" name="picLink" accept="image/*" multiple="multiple" type="file" id="advBannerUpload"
+				 placeholder="请输入楼盘名称" />
+				<input type="checkbox" name="checkbox2" id="checkbox2" value="checkbox2" />选中状态表示展示：未选中状态表示隐藏
 			</div>
 			<img src="" id="bannerImg" name="bannerImg" style="width: 200px;">
 			<div>
@@ -33,7 +35,7 @@
 		var huxingImgListUrl = [];
 		Bmob.initialize("b37e3a5bbf848b3d", "HELLO6");
 		const homeBannerUpload = document.getElementById('homeBannerUpload');
-		
+
 		homeBannerUpload.onchange = () => { //首页banner
 			const pic = homeBannerUpload.files
 			let file
@@ -130,18 +132,64 @@
 			queryArray.push(queryObj);
 			console.log($("#checkbox1").prop("checked"))
 			console.log($("#checkbox2").prop("checked"))
-			// 传入刚刚构造的数组
-			Bmob.Query('HomePageAd').saveAll(queryArray).then(result => {
-				console.log(result[0], result);
-				if (result[0].success) {
-					alert('添加成功')
-				} else {
-					alert('添加失败')
+			queryObj.find().then(res => {
+				// while (res.length > 0) {
+				// 	console.log(res[0].objectId)
+				// 	queryObj.destroy(res[0].objectId)
+				if (res[0].objectId) {
+					queryObj.destroy(res[0].objectId).then(res => {
+						console.log(res)
+						Bmob.Query('HomePageAd').saveAll(queryArray).then(result => {
+							console.log(result[0], result);
+							if (result[0].success) {
+								alert('添加成功')
+							} else {
+								alert('添加失败')
+							}
+							location.reload()
+						}).catch(err => {
+							console.log(err);
+						});
+					}).catch(err => {
+						console.log(err)
+					})
+				}else{
+					Bmob.Query('HomePageAd').saveAll(queryArray).then(result => {
+						console.log(result[0], result);
+						if (result[0].success) {
+							alert('添加成功')
+						} else {
+							alert('添加失败')
+						}
+						location.reload()
+					}).catch(err => {
+						console.log(err);
+					});
 				}
-				location.reload()
-			}).catch(err => {
-				console.log(err);
+				// }
 			});
+			console.log()
+			// if(){
+			// 	query.destroy('objectId').then(res => {
+			// 	  console.log(res)
+			// 	}).catch(err => {
+			// 	  console.log(err)
+			// 	})
+			// }else{
+			// 	// 传入刚刚构造的数组
+			// 	Bmob.Query('HomePageAd').saveAll(queryArray).then(result => {
+			// 		console.log(result[0], result);
+			// 		if (result[0].success) {
+			// 			alert('添加成功')
+			// 		} else {
+			// 			alert('添加失败')
+			// 		}
+			// 		location.reload()
+			// 	}).catch(err => {
+			// 		console.log(err);
+			// 	});
+			// }
+
 		})
 	</script>
 </html>
