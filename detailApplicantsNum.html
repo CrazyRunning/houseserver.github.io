@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>添加楼盘报名人数</title>
+		<link rel="stylesheet" type="text/css" href="css/index.css" />
+	</head>
+	<body>
+		<form action="" method="post" id="articleForm">
+			<div class="inputContent">
+				<span class="spanStyle">无房人数：</span>
+				<input class="inputStyle" name="personWithoutHouse" type="number" id="personWithoutHouse" placeholder="请输入无房人数" />
+			</div>
+			<div class="inputContent">
+				<span class="spanStyle">有房人数：</span>
+				<input class="inputStyle" name="personWithHouse" type="number" id="personWithHouse" placeholder="请输入有房人数" />
+			</div>
+			<div>
+				<button type="button" class="submitBtn" id="submitBtn">提交</button>
+			</div>
+		</form>
+	</body>
+	<script src="js/jquery.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/Bmob-2.1.0.min.js.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		Bmob.initialize("b37e3a5bbf848b3d", "HELLO6");
+
+		function getUrlParam(id) { //获取浏览器URL的参数值
+			var reg = new RegExp("(^|&)" + id + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+			var r = window.location.search.substr(1).match(reg); //匹配目标参数
+			if (r != null) return unescape(r[2]);
+			return null; //返回参数值
+		}
+		var id = getUrlParam('id')
+		$("#submitBtn").click(function() { //提交数据
+			const queryArray = new Array();
+			var queryObj = Bmob.Query('shakeProcess');
+			var personWithoutHouseValue = $("#personWithoutHouse").val();
+			var personWithHouseValue = $("#personWithHouse").val();
+			if (personWithoutHouseValue) {
+				queryObj.set("personWithoutHouse", Number(personWithoutHouseValue));
+			} else {
+				queryObj.set("personWithoutHouse", 0);
+			}
+			if (personWithHouseValue) {
+				queryObj.set("personWithHouse", Number(personWithHouseValue));
+			} else {
+				queryObj.set("personWithHouse", 0);
+			}
+			if (id) {
+				queryObj.set("parentId", id);
+			}
+			queryArray.push(queryObj);
+			// 传入刚刚构造的数组
+			Bmob.Query('shakeProcess').saveAll(queryArray).then(result => {
+				console.log(result[0], result);
+				if (result[0].success) {
+					alert('添加成功')
+				} else {
+					alert('添加失败')
+				}
+				window.location.href = "javascript:history.go(-1)";
+			}).catch(err => {
+				console.log(err);
+			});
+		})
+	</script>
+</html>

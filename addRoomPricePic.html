@@ -2,21 +2,39 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>首页广告</title>
+		<title>添加公示方案和一房一价图</title>
 		<link rel="stylesheet" type="text/css" href="css/index.css" />
 	</head>
 	<body>
 		<form action="" method="post" id="articleForm">
 			<div class="inputContent">
-				<span class="spanStyle">首页banner：</span>
-				<input class="inputStyle" name="picLink" accept="image/*" multiple="multiple" type="file" id="homeBannerUpload" placeholder="请输入楼盘名称" />
-			    <input type="checkbox" name="checkbox1" id="checkbox1" value="checkbox1" />选中状态表示展示：未选中状态表示隐藏
+				<span class="spanStyle">主力户型：</span>
+				<input class="inputStyle" name="mainHouse" id="mainHouse" placeholder="请输入主力户型" />
+			</div>
+			<div class="inputContent">
+				<span class="spanStyle">验资金额：</span>
+				<input class="inputStyle" name="fundVerification" id="fundVerification" placeholder="请输入验资金额" />
+			</div>
+			<div class="inputContent">
+				<span class="spanStyle">销售范围：</span>
+				<input class="inputStyle" name="salesScope" id="salesScope" placeholder="请输入销售范围" />
+			</div>
+			<div class="inputContent">
+				<span class="spanStyle">装修情况：</span>
+				<input class="inputStyle" name="decoration" type="number" id="decoration" placeholder="请输入装修情况" />
+			    <span>装修情况：1：精装  0：清水</span>
+			</div>
+
+			<div class="inputContent">
+				<span class="spanStyle">公示方案：</span>
+				<input class="inputStyle" name="annoucePlan" accept="image/*" multiple="multiple" type="file" id="annoucePlanUpload"
+				 placeholder="请输入楼盘名称" />
 			</div>
 			<img src="" id="img" name="img" style="width: 200px;">
 			<div class="inputContent">
-				<span class="spanStyle">广告图片链接：</span>
-				<input class="inputStyle" name="picLink" accept="image/*" multiple="multiple" type="file" id="advBannerUpload" placeholder="请输入楼盘名称" />
-			    <input type="checkbox" name="checkbox2" id="checkbox2" value="checkbox2" />选中状态表示展示：未选中状态表示隐藏
+				<span class="spanStyle">一房一价图：</span>
+				<input class="inputStyle" name="roomPricePic" accept="image/*" multiple="multiple" type="file" id="roomPricePicUpload"
+				 placeholder="请输入楼盘名称" />
 			</div>
 			<img src="" id="bannerImg" name="bannerImg" style="width: 200px;">
 			<div>
@@ -27,15 +45,22 @@
 	<script src="js/jquery.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/Bmob-2.1.0.min.js.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript">
+		function getUrlParam(id) { //获取浏览器URL的参数值
+			var reg = new RegExp("(^|&)" + id + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+			var r = window.location.search.substr(1).match(reg); //匹配目标参数
+			if (r != null) return unescape(r[2]);
+			return null; //返回参数值
+		}
+		var id = getUrlParam('id')
 		var imgList = [];
 		var imgListUrl = [];
 		var huxingImgList = [];
 		var huxingImgListUrl = [];
 		Bmob.initialize("b37e3a5bbf848b3d", "HELLO6");
-		const homeBannerUpload = document.getElementById('homeBannerUpload');
-		
-		homeBannerUpload.onchange = () => { //首页banner
-			const pic = homeBannerUpload.files
+		const annoucePlanUpload = document.getElementById('annoucePlanUpload');
+
+		annoucePlanUpload.onchange = () => { //首页banner
+			const pic = annoucePlanUpload.files
 			let file
 			for (let item of pic) {
 				file = Bmob.File(item.name, item);
@@ -57,7 +82,7 @@
 				for (i = 0; i <= res.length; i++) { //只展示
 					if (res[i] && res[i].url) {
 						tem += "<div class='de" + parseInt(i + 1) +
-							"' style='width:100px;display:inline'>首页banner:<img style='width:100px' src='" + res[i].url + "'></div>";
+							"' style='width:100px;display:inline'>公示方案:<img style='width:100px' src='" + res[i].url + "'></div>";
 					}
 
 				}
@@ -74,9 +99,9 @@
 				console.log(error)
 			})
 		}
-		const advBannerUpload = document.getElementById('advBannerUpload');
-		advBannerUpload.onchange = () => { //首页banner
-			const pic = advBannerUpload.files
+		const roomPricePicUpload = document.getElementById('roomPricePicUpload');
+		roomPricePicUpload.onchange = () => { //首页banner
+			const pic = roomPricePicUpload.files
 			let file
 			for (let item of pic) {
 				file = Bmob.File(item.name, item);
@@ -98,7 +123,7 @@
 				for (i = 0; i <= res.length; i++) { //只展示
 					if (res[i] && res[i].url) {
 						tem += "<div class='de" + parseInt(i + 1) +
-							"' style='width:100px;display:inline'>广告图片链接:<img style='width:100px' src='" + res[i].url + "'></div>";
+							"' style='width:100px;display:inline'>一房一价图:<img style='width:100px' src='" + res[i].url + "'></div>";
 					}
 
 				}
@@ -118,27 +143,46 @@
 
 		$("#submitBtn").click(function() { //提交数据
 			const queryArray = new Array();
-			var queryObj = Bmob.Query('HomePageAd');
+			var queryObj = Bmob.Query('PreShakeInfo');
+			var mainHouseValue = $("#mainHouse").val();
+			var salesScopeValue = $("#salesScope").val();
+			var fundVerificationValue = $("#fundVerification").val();
+			var decorationValue = $("#decoration").val();
 			if (huxingImgListUrl.length > 0) {
-				queryObj.set("banners", huxingImgListUrl);
+				queryObj.set("annoucePlan", huxingImgListUrl);
 			}
 			if (imgListUrl.length > 0) {
-				queryObj.set("adImgLink", imgListUrl);
+				queryObj.set("roomPricePic", imgListUrl);
 			}
-			queryObj.set("showBanner", $("#checkbox1").prop("checked"));
-			queryObj.set("show", $("#checkbox2").prop("checked"));
+			if (mainHouseValue) {
+				queryObj.set("mainHouse", mainHouseValue);
+			}
+			if (salesScopeValue) {
+				queryObj.set("salesScope", salesScopeValue);
+			}
+			if (fundVerificationValue) {
+				queryObj.set("fundVerification", fundVerificationValue);
+			}
+			if (decorationValue) {
+				queryObj.set("decoration", Number(decorationValue));
+			} else {
+				queryObj.set("decoration", 0);
+			}
+			if(id){
+				queryObj.set("parentId", id);
+			}
+			
+			
 			queryArray.push(queryObj);
-			console.log($("#checkbox1").prop("checked"))
-			console.log($("#checkbox2").prop("checked"))
 			// 传入刚刚构造的数组
-			Bmob.Query('HomePageAd').saveAll(queryArray).then(result => {
+			Bmob.Query('PreShakeInfo').saveAll(queryArray).then(result => {
 				console.log(result[0], result);
 				if (result[0].success) {
 					alert('添加成功')
 				} else {
 					alert('添加失败')
 				}
-				location.reload()
+				window.location.href="javascript:history.go(-1)";
 			}).catch(err => {
 				console.log(err);
 			});
